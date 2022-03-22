@@ -1,9 +1,27 @@
 const std = @import("std");
 
-pub fn main() anyerror!void {
-    std.log.info("All your codebase are belong to us.", .{});
-}
+const n = 4_294_967_295;
+var sieveValues: [n]bool = undefined;
 
-test "basic test" {
-    try std.testing.expectEqual(10, 3 + 7);
+pub fn main() anyerror!void {
+    var i: u64 = 2;
+
+    while ((i * i) < n) {
+        if (!sieveValues[i]) {
+            var j: u64 = 0;
+            while (((i * i) + (j * i)) < n) {
+                var k = (i * i) + (j * i);
+                sieveValues[k] = true;
+                j += 1;
+            }
+        }
+
+        i += 1;
+    }
+
+    for (sieveValues) |item, index| {
+        if (!item and index >= 2) {
+            std.debug.print("{d}\n", .{index});
+        }
+    }
 }
